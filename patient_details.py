@@ -1,6 +1,5 @@
 import pandas as pd
 
-# Create a class for patient details
 class Patient_details:
     def __init__(self):
         self.age = None
@@ -68,73 +67,8 @@ class Patient_details:
                 break
             else:
                 print("Coverage level must be one of 'Basic', 'Standard', 'Premium'")
-                
-    def calculate_charges(self):
-        # Charges calculation based on different factors
-        base_charge = 100  # Base charge
-        age_charge = 0
-        if self.age < 25:
-            age_charge = 20
-        elif self.age >= 45:
-            age_charge = 50
-        
-        smoker_charge = 0
-        if self.smoker == 'yes':
-            smoker_charge = 100
-        
-        bmi_charge = 0
-        if self.bmi > 30:
-            bmi_charge = 30
-        
-        medical_history_charge = 0
-        if self.medical_history:
-            medical_history_charge = 50
-        
-        coverage_level_charge = 0
-        if self.coverage_level == 'standard':
-            coverage_level_charge = 30
-        elif self.coverage_level == 'premium':
-            coverage_level_charge = 50
-        
-        self.charges = base_charge + age_charge + smoker_charge + bmi_charge + medical_history_charge + coverage_level_charge
 
-# Initialize an empty list to hold patient details
-patient_data = []
-
-# Ask user for patient details
-while True:
-    patient = Patient_details()
-    patient.enter_age()
-    patient.enter_gender()
-    patient.enter_smoker()
-    patient.enter_height_and_weight()
-    patient.enter_medical_history()
-    patient.enter_coverage_level()
-    patient.calculate_charges()
-
-    patient_data.append(patient)
-
-    another_entry = input("Do you want to enter details for another patient? (yes/no): ").lower()
-    if another_entry != 'yes':
-        break
-
-# Create DataFrame from the list of patient details with selected columns
-column_names = ["age","gender", "smoker", "bmi","medical_history", "coverage_level", "charges"]
-df_pat = pd.DataFrame([{col: getattr(p, col) for col in column_names} for p in patient_data])
-
-# Save DataFrame to a CSV file
-df_pat.to_csv("patient_details.csv", index=False)
-
-
-
-# Check if there is only one record in the DataFrame
-# Check if there is only one record in the DataFrame
-if len(df_pat) == 1:
-    print(f"According to our calculation, your charges are: {df_pat['charges'].iloc[0]}")
-else:
-    print("According to our calculation, these are your family charges:")
-    for index, row in df_pat.iterrows():
-        print(f"Patient {index + 1}: Gender: {row['gender']}, Smoker: {row['smoker']}, BMI: {row['bmi']}, Medical History: {row['medical_history']}, Coverage Level: {row['coverage_level']}  ")
-        print(f"Charges: {row['charges']}")
-        print()  # Add a blank line between each patient's details
-
+    def create_df_pat(self, patient_data):
+        # Create DataFrame from the list of patient details with selected columns
+        column_names = ["age", "gender", "smoker", "bmi", "medical_history", "coverage_level", "charges"]
+        return pd.DataFrame([{col: getattr(p, col) for col in column_names} for p in patient_data])
