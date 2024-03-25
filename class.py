@@ -1,85 +1,129 @@
 import pandas as pd
 
-csv_file_path = "C:/DE_Course/mid_project/patientInsurancePremiaDE/insurance_dataset.csv"
-
-df = pd.read_csv(csv_file_path)
-
-# List of column names
-column_names = ["gender", "smoker", "medical_history", "coverage_level"]
-
-# Initialize an empty dictionary to store column values
-column_values_dict = {}
-
-# Iterate through each column name
-for col_name in column_names:
-    # Extract values for the current column, convert them to a set to remove duplicates, then convert back to a list
-    column_values = list(set(df[col_name]))
-    
-    # Store the column name as key and the unique values list as value in the dictionary
-    column_values_dict[col_name] = column_values
-
-txt_for_user = "Hi user" + '\n' + "please provide your detailes such as 'age',\
-'gender', 'smoker', 'height_in_cm', 'weight_in_kg', 'medical_history' and the coverage level that you want"
-
-txt_for_user_possible_values = "\n" + "That the possible values you can fill for each variable :"
-
-text_guide_for_user = "\n" + "You can fill details for each of your family member, assign each one as 'pat_d_' plus digit." + "\n"\
-"Member number one will assign to 'pat_d_1', member number two will assign to 'pat_d_2' ect" + "\n"\
-
-text_example_for_user = "\n" + "Exmaple for only one member with the details :" + "\n"\
-"age is 45, gender female, not smoke, height 168, weight 65, medical history Diabetes, coverage level is premium --->" + "\n"\
-"pat_d_1 = Patient_details(45, 'female', 'no', 168, 65, 'Diabetes', 'Premium')" + "\n"\
-
-print(txt_for_user)
-
-print(txt_for_user_possible_values)
-
-# Display the dictionary
-print(column_values_dict)
-
-print(text_example_for_user)
-
-
-#Create a class for patient details
+# Create a class for patient details
 class Patient_details:
-    def __init__(self, age: int, gender: str, smoker: str, height_in_cm: int, weight_in_kg: int, medical_history: str, coverage_level: str):
-        # Age constraint
-        if not 18 <= age <= 65:
-            raise ValueError("Age must be between 18 and 65")
+    def __init__(self):
+        self.age = None
+        self.gender = None
+        self.smoker = None
+        self.height_in_cm = None
+        self.weight_in_kg = None
+        self.bmi = None
+        self.medical_history = None
+        self.coverage_level = None
+        self.charges = None
         
-        # Gender constraint
-        gender = gender.lower()  # Convert to lowercase for consistency
-        if gender not in ['male', 'female']:
-            raise ValueError("Gender must be 'Male' or 'Female'")
+    def enter_age(self):
+        while True:
+            try:
+                self.age = int(input("Enter age: "))
+                if not 18 <= self.age <= 65:
+                    raise ValueError("Age must be between 18 and 65")
+                break
+            except ValueError as e:
+                print(e)
 
-        smoker = smoker.lower()
-        if smoker not in ['yes', 'no']:
-            raise ValueError("Smoker must be 'yes' or 'no'")
+    def enter_gender(self):
+        while True:
+            self.gender = input("Enter gender (M/F): ").lower()
+            if self.gender in ['m', 'f']:
+                break
+            else:
+                print("Gender must be 'M' or 'F'")
+
+    def enter_smoker(self):
+        while True:
+            self.smoker = input("Are you a smoker? (y/n): ").lower()
+            if self.smoker in ['y', 'n']:
+                break
+            else:
+                print("Smoker must be 'y' or 'n'")
+
+    def enter_height_and_weight(self):
+        while True:
+            try:
+                self.height_in_cm = int(input("Enter height in cm: "))
+                self.weight_in_kg = int(input("Enter weight in kg: "))
+
+                # Bmi constraint
+                self.bmi = self.weight_in_kg / (self.height_in_cm / 100) ** 2
+                if not 18 <= self.bmi <= 50:
+                    raise ValueError(f"Your calculated BMI is {self.bmi}\nBMI calculated by height and weight, must be between 18 and 50")
+                break
+            except ValueError as e:
+                print(e)
+
+    def enter_medical_history(self):
+        while True:
+            self.medical_history = input("Enter medical history (High blood pressure/Diabetes/Heart disease or leave blank if none): ").lower()
+            if self.medical_history in ["high blood pressure", "diabetes", "heart disease", ""]:
+                break
+            else:
+                print("Medical history must be one of 'High blood pressure', 'Diabetes', 'Heart disease' or empty")
+
+    def enter_coverage_level(self):
+        while True:
+            self.coverage_level = input("Enter coverage level (Basic/Standard/Premium): ").lower()
+            if self.coverage_level in ['basic', 'standard', 'premium']:
+                break
+            else:
+                print("Coverage level must be one of 'Basic', 'Standard', 'Premium'")
+                
+    def calculate_charges(self):
+        # Charges calculation based on different factors
+        base_charge = 100  # Base charge
+        age_charge = 0
+        if self.age < 25:
+            age_charge = 20
+        elif self.age >= 45:
+            age_charge = 50
         
-        # Bmi constraint
-        bmi = weight_in_kg/(height_in_cm/100)**2
-        if not 18 <= bmi <= 50:
-            raise ValueError(f"Your calculated Bmi is {bmi}" + '\n' + "Bmi calculated by height and weight, must be between 18 and 50")
-       
-       # medical_history constraint
-        medical_history = medical_history.lower()
-        if medical_history not in ["high blood pressure", "diabetes", "heart disease", ""]:
-            raise ValueError("medical history must be one of 'High blood pressure', 'Diabetes', 'Heart disease' or empty")
-
-       # coverage_level constraint
-        coverage_level = coverage_level.lower()
-        if coverage_level not in ['basic', 'standard', 'premium']:
-            raise ValueError("coverage level must be one of 'Basic', 'Standard', 'Premium'")
+        smoker_charge = 0
+        if self.smoker == 'yes':
+            smoker_charge = 100
         
-        self.age = age
-        self.gender = gender
-        self.smoker = smoker
-        self.height_in_cm = height_in_cm
-        self.weight_in_kg = weight_in_kg
-        self.bmi = weight_in_kg/(height_in_cm/100)**2
-        self.medical_history = medical_history
-        self.coverage_level = coverage_level
+        bmi_charge = 0
+        if self.bmi > 30:
+            bmi_charge = 30
+        
+        medical_history_charge = 0
+        if self.medical_history:
+            medical_history_charge = 50
+        
+        coverage_level_charge = 0
+        if self.coverage_level == 'standard':
+            coverage_level_charge = 30
+        elif self.coverage_level == 'premium':
+            coverage_level_charge = 50
+        
+        self.charges = base_charge + age_charge + smoker_charge + bmi_charge + medical_history_charge + coverage_level_charge
 
-p = Patient_details(18, 'Male', 'yes', 1174, 65, '', 'basic')
+# Initialize an empty list to hold patient details
+patient_data = []
 
-print(p)
+# Ask user for patient details
+while True:
+    patient = Patient_details()
+    patient.enter_age()
+    patient.enter_gender()
+    patient.enter_smoker()
+    patient.enter_height_and_weight()
+    patient.enter_medical_history()
+    patient.enter_coverage_level()
+    patient.calculate_charges()
+
+    patient_data.append(patient)
+
+    another_entry = input("Do you want to enter details for another patient? (yes/no): ").lower()
+    if another_entry != 'yes':
+        break
+
+# Create DataFrame from the list of patient details with selected columns
+column_names = ["gender", "smoker", "medical_history", "coverage_level", "charges"]
+df_pat = pd.DataFrame([{col: getattr(p, col) for col in column_names} for p in patient_data])
+
+# Save DataFrame to a CSV file
+df_pat.to_csv("patient_details.csv", index=False)
+
+print(df_pat)
+#print(f"According to our caclulation this is your charges: {df_pat.charges}'")
