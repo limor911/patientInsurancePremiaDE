@@ -88,13 +88,16 @@ for column in df.columns:
         ax.yaxis.set_major_formatter(FuncFormatter(format_thousands))
         plt.show()
 
-        # List of columns to analyze
+# List of columns to analyze
 columns_to_analyze = ['age', 'children', 'bmi']
-
+ 
 # Loop through each column
 for column in columns_to_analyze:
     # Correlation coefficient
-    corr_coef = sub_df['charges'].corr(sub_df[column])
+    corr_coef = df['charges'].corr(df[column])
     corr_coef = corr_coef.round(3)*100
-
+ 
     print(f'Correlation coefficient between charges and {column}: {corr_coef}%')
+
+
+  if __name__ == 'main':print('the main block is being executed')

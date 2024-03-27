@@ -1,3 +1,2 @@
 age,gender,smoker,bmi,medical_history,coverage_level,charges
-20,m,y,22,high blood pressure,premium,220
-60,m,y,25,diabetes,standard,230
+18,m,y,22,,basic,120
