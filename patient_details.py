@@ -116,7 +116,7 @@ class Patient_details:
                 print("Invalid input. Please enter a number between 1 and 3.")
 
 
-# Initialize an empty list to hold patient details
+    # Initialize an empty list to hold patient details
 patient_data = []
 
 # Ask user for patient details
@@ -135,15 +135,14 @@ while True:
     print("\nDo you want to enter details for another patient?")
     print("0: No")
     print("1: Yes")
-    
     another_entry = int(input("Enter your choice: "))
     if another_entry != 1:
         break
 
 
-# Create DataFrame from the list of patient details with selected columns
-column_names = ["age", "bmi", "gender", "smoker", "medical_history", "coverage_level"]
-df_pat = pd.DataFrame([{col: getattr(p, col) for col in column_names} for p in Patient_details])
+    # Create DataFrame from the list of patient details with selected columns
+    column_names = ["age", "bmi", "gender", "smoker", "medical_history", "coverage_level"]
+    df_pat = pd.DataFrame([{col: getattr(p, col) for col in column_names} for p in Patient_details])
 
 # Save DataFrame to a CSV file
 df_pat.to_csv("patient_details.csv", index=False)
@@ -181,7 +180,7 @@ df_pat['calculated_charges'] = '$' + df_pat['calculated_charges_int'].map('{:,.0
 #List all relevant columns to patient
 relvant_columns = ['age', 'bmi', 'gender', 'smoker', 'medical_history', 'coverage_level', 'calculated_charges']
 
-print("\nThat the details of all users and thier calculate charges:")
+print("\nAccording to our SIMULATOR, That the details of all users and thier calculate charges:")
 df_pat[relvant_columns].head(50)
 
-if __name__ == 'main':print('the main block is being executed')
+

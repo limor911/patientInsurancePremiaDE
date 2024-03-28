@@ -13,38 +13,42 @@ def csv_drive_path_generatoer(url):
  path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
  return path
 
+
 link = "https://drive.google.com/file/d/1fKeW4q_bPyMH7mbVTj0-1mqtsBtk5428/view?usp=drive_link"
 path = csv_drive_path_generatoer(url = link)
 df = pd.read_csv(path)
-print(df.head())
+
+# If this file is run directly
+if __name__ == "__main__":
+    print(df.head())
 
 # Randomly sample 300,000 rows from the DataFrame
-df = df.sample(n=300000)
+    df = df.sample(n=300000)
 
-df.replace(' ', '_', regex=True, inplace=True)
+    df.replace(' ', '_', regex=True, inplace=True)
 
 
 # Round values to nearest
-df['charges'] = df['charges'].round().astype(int)
+    df['charges'] = df['charges'].round().astype(int)
 
-df['bmi'] = df['bmi'].round().astype(int)
+    df['bmi'] = df['bmi'].round().astype(int)
 
 #List of string columns
-list_of_string_columns = ['gender', 'smoker',	'region',	'medical_history',	'family_medical_history',	'exercise_frequency',	'occupation',	'coverage_level']
+    list_of_string_columns = ['gender', 'smoker',	'region',	'medical_history',	'family_medical_history',	'exercise_frequency',	'occupation',	'coverage_level']
 
 # Loop through each column
-for column in list_of_string_columns:
-    # Convert values to lowercase
-    df[column] = df[column].apply(lambda x: x.lower() if isinstance(x, str) else x)
+    for column in list_of_string_columns:
+     # Convert values to lowercase
+        df[column] = df[column].apply(lambda x: x.lower() if isinstance(x, str) else x)
 
-df.head()
+    df.head()
 
 '''Fix columns
 Replace spaces with underscores
 Round values for bmi
 Round values for charges'''
 
-# Replace spaces with underscores in all columns of the DataFrame
+    # Replace spaces with underscores in all columns of the DataFrame
 df.replace(' ', '_', regex=True, inplace=True)
 
 
@@ -61,24 +65,28 @@ for column in list_of_string_columns:
     # Convert values to lowercase
     df[column] = df[column].apply(lambda x: x.lower() if isinstance(x, str) else x)
 
-df.head()
+# If this file is run directly
+if __name__ == "__main__":
+    df.head()
 
 # Define a function to format y-axis labels with separated thousands
 def format_thousands(x, pos):
     return '{:,.0f}'.format(x)
 
+# If this file is run directly
+if __name__ == "__main__":
 # Loop through each column in the DataFrame
-for column in df.columns:
-    if column != 'charges':  # Exclude column 'charges'
+    for column in df.columns:
+        if column != 'charges':  # Exclude column 'charges'
         # Count the frequency of each unique value in the column
-        value_counts = df[column].value_counts()
+         value_counts = df[column].value_counts()
 
         # Sort the values by index (the unique values in the column)
-        value_counts_sorted = value_counts.sort_index()
-
+        alue_counts_sorted = value_counts.sort_index()
+          
         # Plot the bar graph
         plt.figure(figsize=(10, 6))  # Adjust the figure size if needed
-        ax = value_counts_sorted.plot(kind='bar')
+        ax = alue_counts_sorted.plot(kind='bar')
         plt.title(f'Distribution of {column}')
         plt.xlabel(column)
         plt.ylabel('Frequency')
@@ -88,16 +96,16 @@ for column in df.columns:
         ax.yaxis.set_major_formatter(FuncFormatter(format_thousands))
         plt.show()
 
-# List of columns to analyze
-columns_to_analyze = ['age', 'children', 'bmi']
- 
-# Loop through each column
-for column in columns_to_analyze:
-    # Correlation coefficient
-    corr_coef = df['charges'].corr(df[column])
-    corr_coef = corr_coef.round(3)*100
- 
-    print(f'Correlation coefficient between charges and {column}: {corr_coef}%')
+        # List of columns to analyze
+        columns_to_analyze = ['age', 'children', 'bmi']
 
 
-  if __name__ == 'main':print('the main block is being executed')
+        # Loop through each column
+    for column in columns_to_analyze:
+        # Correlation coefficient
+        corr_coef = df['charges'].corr(df[column])
+        corr_coef = corr_coef.round(3)*100
+ 
+        print(f'Correlation coefficient between charges and {column}: {corr_coef}%')
+
+
