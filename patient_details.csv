@@ -1,2 +1,2 @@
-age,gender,smoker,bmi,medical_history,coverage_level,charges
-18,m,y,22,,basic,120
+age,bmi,gender,smoker,medical_history,coverage_level
+32,20,female,yes,none,premium
