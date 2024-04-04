@@ -1,4 +1,4 @@
-import test240404
+import script
 
 
 

@@ -140,17 +140,14 @@ while True:
         break
 
 
-    # Create DataFrame from the list of patient details with selected columns
-    column_names = ["age", "bmi", "gender", "smoker", "medical_history", "coverage_level"]
-    df_pat = pd.DataFrame([{col: getattr(p, col) for col in column_names} for p in patient_data])
+# Create DataFrame from the list of patient details with selected columns
+column_names = ["age", "bmi", "gender", "smoker", "medical_history", "coverage_level"]
+df_pat = pd.DataFrame([{col: getattr(p, col) for col in column_names} for p in patient_data])
 
 # Save DataFrame to a CSV file
 df_pat.to_csv("patient_details.csv", index=False)
 
-
-# Calculate charges for df_pat based on mean charges of df
-# The calculation based on patient data like age, gender, ect.
-charges_list = []
+# Iterate over df_pat within the loop where it's defined
 for index, row in df_pat.iterrows():
     # Define the range for age and bmi
     age_range = range(row['age'] - 2, row['age'] + 3)
@@ -172,6 +169,7 @@ for index, row in df_pat.iterrows():
     else:
         charges_list.append(None)
 
+# Calculate charges for df_pat based on mean charges of df
 df_pat['calculated_charges_int'] = charges_list
 
 # Add thousand separators to the 'numbers' column and concatenate '$' sign
